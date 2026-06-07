@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Learning Dashboard
 
-## Getting Started
+A responsive learning dashboard built with Next.js App Router, TypeScript, Tailwind CSS, Supabase, and Framer Motion.
 
-First, run the development server:
+## Architecture
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+The application follows a component-driven architecture:
+
+* **App Router** for routing and server-side data fetching.
+* **Supabase** as the backend data source.
+* **Reusable UI components** for Hero, Activity, Course Cards, Sidebar, and Skeleton states.
+* **Framer Motion** for page transitions, staggered animations, hover effects, and navigation micro-interactions.
+
+### Project Structure
+
+```text
+app/
+├── page.tsx
+├── loading.tsx
+├── error.tsx
+
+components/
+├── Dashboard.tsx
+├── Sidebar.tsx
+├── HeroTile.tsx
+├── ActivityTile.tsx
+├── CourseCard.tsx
+├── DashboardSkeleton.tsx
+└── AnimatedTile.tsx
+
+lib/
+├── supabase/
+│   ├── server.ts
+│   └── queries.ts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Server / Client Component Split
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The application follows Next.js App Router best practices:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Server Components
 
-## Learn More
+* Data fetching from Supabase is performed on the server.
+* The page component remains server-rendered to reduce client-side JavaScript and improve performance.
+* Database queries are isolated inside `lib/supabase/queries.ts`.
 
-To learn more about Next.js, take a look at the following resources:
+### Client Components
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Client components are used only where interactivity is required:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* `Sidebar` → navigation state and layout animations.
+* `AnimatedTile` → hover animations and staggered entry effects.
+* `CourseCard` → animated progress bars.
+* Activity chart interactions and tooltips.
 
-## Deploy on Vercel
+This approach keeps the client bundle small while preserving a rich interactive experience.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Animations & Interactions
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Implemented with Framer Motion:
+
+* Staggered Bento tile entrance animations.
+* Hover elevation using spring physics.
+* Subtle glow and border transitions on hover.
+* Animated sidebar navigation highlight using `layoutId`.
+* Responsive mobile bottom navigation.
+* Animated course progress indicators.
+
+## Loading & Error Handling
+
+### Loading States
+
+* Implemented route-level loading UI using `loading.tsx`.
+* Skeleton components prevent layout shifts while data is loading.
+
+### Error Handling
+
+* Route-level error boundaries implemented using `error.tsx`.
+* Database query failures surface meaningful error states.
+* Empty-state handling for missing course data.
+
+## Challenges Faced
+
+* Balancing Server and Client Components while preserving animation capabilities.
+* Preventing layout shifts between loading and loaded states.
+* Implementing responsive navigation that works as a collapsible sidebar on desktop and a bottom navigation bar on mobile.
+* Coordinating Framer Motion staggered animations across independently rendered dashboard sections.
+
+## Running Locally
+
+```bash
+npm install
+npm run dev
+```
+
+Create a `.env.local` file:
+
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+Then open:
+
+```text
+http://localhost:3000
+```

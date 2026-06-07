@@ -1,26 +1,18 @@
 @import "tailwindcss";
 
+/* Custom small utilities for neon/glow & subtle card backgrounds */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	--bg-900: #07060a;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.shadow-neon {
+	box-shadow: 0 8px 24px rgba(139, 92, 246, 0.15), 0 1px 0 rgba(255,255,255,0.02) inset;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+	background-color: var(--bg-900);
+}
+
+.card-soft {
+	background: linear-gradient(180deg, rgba(17,17,20,0.5), rgba(10,10,12,0.5));
 }
